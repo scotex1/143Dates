@@ -13,13 +13,14 @@ import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+ const firebaseConfig = {
+  apiKey: "AIzaSyC3sIauDUSY-q7ZWx_n2EpIsctZsWGE6Bs",
+  authDomain: "data-credit-a48bd.firebaseapp.com",
+  projectId: "data-credit-a48bd",
+  storageBucket: "data-credit-a48bd.firebasestorage.app",
+  messagingSenderId: "154490671024",
+  appId: "1:154490671024:web:e87588a05df41c4c625075",
+  measurementId: "G-5E6DF2Y208"
 };
 
 // Initialize Firebase (only once)
