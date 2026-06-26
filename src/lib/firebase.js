@@ -14,13 +14,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
  const firebaseConfig = {
-  apiKey: "AIzaSyC3sIauDUSY-q7ZWx_n2EpIsctZsWGE6Bs",
-  authDomain: "data-credit-a48bd.firebaseapp.com",
-  projectId: "data-credit-a48bd",
-  storageBucket: "data-credit-a48bd.firebasestorage.app",
-  messagingSenderId: "154490671024",
-  appId: "1:154490671024:web:e87588a05df41c4c625075",
-  measurementId: "G-5E6DF2Y208"
+   apiKey: "AIzaSyD4aN6sNxuY91OpCzRhIslvCXYWSKJ5PNM",
+  authDomain: "planning-with-ai-67a76.firebaseapp.com",
+  projectId: "planning-with-ai-67a76",
+  storageBucket: "planning-with-ai-67a76.firebasestorage.app",
+  messagingSenderId: "250873437317",
+  appId: "1:250873437317:web:276c5df31d26b399495dec"
 };
 
 // Initialize Firebase (only once)
