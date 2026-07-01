@@ -12,12 +12,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId:             "YOUR_APP_ID",
+  apiKey: "AIzaSyD4aN6sNxuY91OpCzRhIslvCXYWSKJ5PNM",
+  authDomain: "planning-with-ai-67a76.firebaseapp.com",
+  projectId: "planning-with-ai-67a76",
+  storageBucket: "planning-with-ai-67a76.firebasestorage.app",
+  messagingSenderId: "250873437317",
+  appId: "1:250873437317:web:276c5df31d26b399495dec"
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
