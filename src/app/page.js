@@ -550,7 +550,7 @@ function ProposalCreator({ user, onBack, onSave, showToast }) {
 
   const themeObj = THEMES.find(t => t.id === theme);
   const catObj   = FOOD_CATEGORIES.find(c => c.id === activeCat);
-  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}?view=${saved}` : "";
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/proposal/${saved}` : "";
 
   if (saved) return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#fff0f3,#f5f3ff)", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", fontFamily: G.fontSans }}>
@@ -564,7 +564,7 @@ function ProposalCreator({ user, onBack, onSave, showToast }) {
         </div>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", justifyContent: "center" }}>
           <a href={`https://wa.me/?text=${encodeURIComponent(`💌 ${form.senderName} ne tumhare liye special date plan kiya! Dekho: ${shareUrl}`)}`} target="_blank" rel="noreferrer" style={{ ...S.btn("#25D366"), textDecoration: "none" }}>📱 WhatsApp</a>
-          <button style={S.btn("#8B5CF6")} onClick={() => onSave(saved)}>📊 Status</button>
+          <button style={S.btn("#8B5CF6")} onClick={() => window.location.href = `/status/${saved}`}>📊 Status Dekho</button>
           <button style={{ ...S.btn("#6B7280", true) }} onClick={onBack}>Dashboard</button>
         </div>
       </div>
@@ -890,7 +890,7 @@ function StatusPage({ proposalId, onBack }) {
   const themeObj = THEMES.find(t => t.id === proposal.theme) || THEMES[0];
   const allItems = [...(proposal.foods || []), ...(proposal.activities || [])];
   const checkedCount = (proposal.checkedItems || []).filter(x => allItems.includes(x)).length;
-  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}?view=${proposalId}` : "";
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/proposal/${proposalId}` : "";
 
   return (
     <div style={{ minHeight: "100vh", background: "#F9FAFB", fontFamily: G.fontSans }}>
@@ -991,18 +991,12 @@ function StatusPage({ proposalId, onBack }) {
 export default function App() {
   const [view, setView]           = useState("loading");
   const [user, setUser]           = useState(null);
-  const [proposalId, setProposalId] = useState(null);
   const [toastMsg, setToastMsg]   = useState(null);
 
   const showToast = (msg) => setToastMsg(msg);
 
-  // Check URL for shared proposal link
+  // Firebase Auth state listener
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const viewId = params.get("view");
-    if (viewId) { setProposalId(viewId); setView("proposal"); return; }
-
-    // Firebase Auth state listener
     const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const userDoc = await getUserDoc(firebaseUser.uid);
@@ -1017,6 +1011,13 @@ export default function App() {
 
   const login  = (u) => { setUser(u); setView("dashboard"); };
   const logout = async () => { await signOut(auth); setUser(null); setView("landing"); };
+
+  // Handle /dashboard route
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.pathname === "/dashboard" && user) {
+      setView("dashboard");
+    }
+  }, [user]);
 
   if (view === "loading") return <Spinner />;
 
@@ -1033,13 +1034,12 @@ export default function App() {
             if (user.plan === "free" && (user.proposalCount || 0) >= 5) { showToast("⚠️ Free plan limit! Upgrade karo."); return; }
             setView("create");
           }}
-          onViewProposal={(id) => { setProposalId(id); setView("proposal"); }}
-          onStatus={(id) => { setProposalId(id); setView("status"); }}
+          onViewProposal={(id) => { window.location.href = `/proposal/${id}`; }}
+          onStatus={(id) => { window.location.href = `/status/${id}`; }}
         />
       )}
-      {view === "create"   && user && <ProposalCreator user={user} onBack={() => setView("dashboard")} onSave={(id) => { setProposalId(id); setView("status"); }} showToast={showToast} />}
-      {view === "proposal" && <ProposalView proposalId={proposalId} onBack={user ? () => setView("dashboard") : null} />}
-      {view === "status"   && user && <StatusPage proposalId={proposalId} onBack={() => setView("dashboard")} />}
+      {view === "create"   && user && <ProposalCreator user={user} onBack={() => setView("dashboard")} onSave={(id) => { window.location.href = `/status/${id}`; }} showToast={showToast} />}
+
     </div>
   );
 }
